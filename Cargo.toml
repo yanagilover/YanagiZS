@@ -1,0 +1,77 @@
+[workspace]
+members = ["crates/*",  "crates/gate-server/kcp",  "crates/yanagi-proto/yanagi-proto-derive", "crates/qwer/qwer-derive", "crates/protocol/protocol-macros", "crates/qwer-rpc/qwer-server-example", "crates/qwer-rpc/qwer-client-example", "crates/yanagi-data/blockfile"]
+resolver = "2"
+
+[workspace.package]
+version = "0.0.1"
+
+[workspace.dependencies]
+# Framework
+tokio = { version = "1.40.0", features = ["full"] }
+futures = "0.3.31"
+axum = { version = "0.7.6" }
+axum-server = "0.7.1"
+
+# Http
+ureq = "2.10.1"
+tower-http = { version = "0.6.1", features = ["fs"] }
+
+# Serialization
+serde = { version = "1.0.210", features = ["derive"] }
+serde_json = "1.0.128"
+toml = "0.8.19"
+regex = "1.10.6"
+rbase64 = "2.0.3"
+hex = "0.4.3"
+
+# Flatbuffers
+flatbuffers = "24.3.25"
+flatc-rust = "0.2.0"
+
+# Protobuf
+prost = "0.13.3"
+prost-types = "0.13.3"
+prost-build = "0.13.3"
+
+# Cryptography
+rsa = { version = "0.9.6", features = ["sha2"] }
+xxhash-rust = { version = "0.8.12", features = ["const_xxh64"] }
+
+# Database
+surrealdb = "2.0.4"
+
+# Error processing
+anyhow = "1.0.93"
+thiserror = "2.0.0"
+
+# Util
+byteorder = "1.5.0"
+dashmap = "6.1.0"
+rand = "0.8.5"
+rand_mt = "4.2.2"
+password-hash = { version = "0.5.0", features = ["alloc", "rand_core"] }
+pbkdf2 = { version = "0.12.2", features = ["simple"] }
+paste = "1.0.15"
+const_format = "0.2.33"
+
+# Tracing
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["env-filter"] }
+
+# Internal
+common = { path = "crates/common" }
+qwer = { path = "crates/qwer" }
+qwer-rpc = { path = "crates/qwer-rpc" }
+qwer-derive = { path = "crates/qwer/qwer-derive" }
+protocol = { path = "crates/protocol" }
+yanagi-data = { path = "crates/yanagi-data" }
+yanagi-eventgraph = { path = "crates/yanagi-eventgraph" }
+yanagi-proto = { path = "crates/yanagi-proto" }
+yanagi-encryption = { path = "crates/yanagi-encryption" }
+yanagi-http-client = { path = "crates/yanagi-http-client" }
+
+[profile.release]
+strip = true      # Automatically strip symbols from the binary.
+lto = true        # Link-time optimization.
+opt-level = 3     # Optimize for speed.
+codegen-units = 1 # Maximum size reduction optimizations.

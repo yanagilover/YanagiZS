@@ -1,0 +1,9 @@
+[package]
+name = "qwer"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+byteorder.workspace = true
+paste.workspace = true
+qwer-derive.workspace = true

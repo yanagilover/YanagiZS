@@ -1,0 +1,12 @@
+[package]
+name = "yanagi-encryption"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+rsa.workspace = true
+rand.workspace = true
+rand_mt.workspace = true
+thiserror.workspace = true
+byteorder.workspace = true
+common.workspace = true

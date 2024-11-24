@@ -1,0 +1,19 @@
+[package]
+name = "yanagi-data"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+byteorder.workspace = true
+flatbuffers.workspace = true
+hex.workspace = true
+paste.workspace = true
+xxhash-rust.workspace = true
+const_format.workspace = true
+blockfile = { path = "blockfile" }
+
+[dev-dependencies]
+ureq.workspace = true
+
+[build-dependencies]
+flatc-rust.workspace = true

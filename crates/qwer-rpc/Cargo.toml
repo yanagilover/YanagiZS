@@ -1,0 +1,16 @@
+[package]
+name = "qwer-rpc"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+common.workspace = true
+qwer.workspace = true
+
+tokio.workspace = true
+futures.workspace = true
+tracing.workspace = true
+thiserror.workspace = true
+
+dashmap.workspace = true
+byteorder.workspace = true

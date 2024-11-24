@@ -1,0 +1,11 @@
+[package]
+name = "yanagi-eventgraph"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+serde.workspace = true
+prost.workspace = true
+
+[build-dependencies]
+prost-build.workspace = true

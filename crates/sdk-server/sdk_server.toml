@@ -1,0 +1,6 @@
+http_addr = "0.0.0.0:10001"
+
+[database]
+url = "localhost:8000"
+username = "root"
+password = "root"

@@ -1,0 +1,14 @@
+[package]
+name = "kcp"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+bytes = "1.7.2"
+log = "0.4.22"
+thiserror.workspace = true
+
+[dev-dependencies]
+time = "0.3.36"
+rand = "0.8.5"
+env_logger = "0.11.5"

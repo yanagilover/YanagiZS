@@ -1,0 +1,17 @@
+[package]
+name = "yanagi-proto"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+qwer.workspace = true
+protocol.workspace = true
+prost.workspace = true
+prost-types.workspace = true
+yanagi-proto-derive = { path = "./yanagi-proto-derive" }
+
+[build-dependencies]
+prost-build.workspace = true
+syn = "2.0.79"
+quote = "1.0.37"
+prettyplease = "0.2.22"

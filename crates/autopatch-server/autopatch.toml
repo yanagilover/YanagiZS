@@ -1,0 +1,2 @@
+http_addr = "0.0.0.0:10000"
+serve_dir = "./autopatch"

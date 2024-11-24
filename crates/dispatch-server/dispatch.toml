@@ -1,0 +1,3 @@
+http_addr = "0.0.0.0:10002"
+outer_http_url = "http://127.0.0.1:10002"
+design_data_url = "http://127.0.0.1:10000/design_data/NAP_Publish_AppStore_1.4"

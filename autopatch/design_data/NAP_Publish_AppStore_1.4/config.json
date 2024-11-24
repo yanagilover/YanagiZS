@@ -1,0 +1,22 @@
+{
+  "VersionInfoGroups": {
+    "OSPRODWin1.3.0": {
+      "Seed": "",
+      "Platform": "StandaloneWindows64",
+      "Environment": "oversea",
+      "ServerListUrl": "http://127.0.0.1:10000/design_data/NAP_Publish_AppStore_1.4/serverlist.json",
+      "EncryptionConfigUrl": "http://127.0.0.1:10000/design_data/NAP_Publish_AppStore_1.4/encryption.json",
+      "DesignDataUrl": "https://autopatchos.zenlesszonezero.com/design_data/1.3_live/output_4626751_a32b289717/client",
+      "CdnCheckUrl": "https://autopatchcn.juequling.com/nap_test.txt"
+    },
+	"CNBetaWin1.4.2": {
+		"Seed": "",
+		"Platform": "StandaloneWindows64",
+		"Environment": "oversea",
+		"ServerListUrl": "http://127.0.0.1:10000/design_data/NAP_Publish_AppStore_1.4/serverlist.json",
+		"EncryptionConfigUrl": "http://127.0.0.1:10000/design_data/NAP_Publish_AppStore_1.4/encryption.json",
+		"DesignDataUrl": "http://127.0.0.1:10000/design_data/beta_live/output_5016531_79764a0a26/client",
+		"CdnCheckUrl": "https://autopatchcn.juequling.com/nap_test.txt"
+	}
+  }
+}

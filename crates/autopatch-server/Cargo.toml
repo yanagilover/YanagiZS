@@ -1,0 +1,23 @@
+[package]
+name = "yanagi-autopatch-server"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+# Framework
+tokio.workspace = true
+axum.workspace = true
+axum-server.workspace = true
+tower-http.workspace = true
+
+# Error processing
+anyhow.workspace = true
+
+# Serialization
+serde.workspace = true
+
+# Tracing
+tracing.workspace = true
+
+# Internal
+common.workspace = true

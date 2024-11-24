@@ -1,0 +1,9 @@
+target/
+
+/autopatch.toml
+/dispatch.toml
+/gateserver.toml
+/gameserver.toml
+/sdk_server.toml
+
+*.proto

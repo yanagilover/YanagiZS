@@ -1,0 +1,27 @@
+[package]
+name = "yanagi-dispatch-server"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+# Framework
+tokio.workspace = true
+axum.workspace = true
+axum-server.workspace = true
+
+# Error processing
+anyhow.workspace = true
+thiserror.workspace = true
+
+# Serialization
+serde.workspace = true
+serde_json.workspace = true
+rbase64.workspace = true
+
+# Tracing
+tracing.workspace = true
+
+# Internal
+common.workspace = true
+yanagi-encryption.workspace = true
+yanagi-http-client.workspace = true

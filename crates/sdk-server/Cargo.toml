@@ -1,0 +1,42 @@
+[package]
+name = "sdk-server"
+edition = "2021"
+version.workspace = true
+
+[[bin]]
+name = "yanagi-sdk-server"
+path = "src/main.rs"
+
+[dependencies]
+# Framework
+tokio.workspace = true
+axum.workspace = true
+axum-server.workspace = true
+
+# Cryptography
+rsa.workspace = true
+password-hash.workspace = true
+pbkdf2.workspace = true
+
+# Database
+surrealdb.workspace = true
+
+# Error processing
+anyhow.workspace = true
+thiserror.workspace = true
+
+# Util
+rand.workspace = true
+regex.workspace = true
+
+# Serialization
+serde.workspace = true
+serde_json.workspace = true
+rbase64.workspace = true
+byteorder.workspace = true
+
+# Tracing
+tracing.workspace = true
+
+# Internal
+common.workspace = true

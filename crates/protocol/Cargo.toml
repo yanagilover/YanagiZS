@@ -1,0 +1,9 @@
+[package]
+name = "protocol"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+thiserror.workspace = true
+qwer.workspace = true
+protocol-macros = { path = "protocol-macros" }

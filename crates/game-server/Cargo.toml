@@ -1,0 +1,38 @@
+[package]
+name = "yanagi-game-server"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+# Framework
+tokio.workspace = true
+
+# Service
+qwer.workspace = true
+qwer-rpc.workspace = true
+protocol.workspace = true
+
+# Database
+surrealdb.workspace = true
+
+# Tracing
+tracing.workspace = true
+
+# Error processing
+anyhow.workspace = true
+thiserror.workspace = true
+
+# Serialization
+serde.workspace = true
+serde_json.workspace = true
+rbase64.workspace = true
+
+# Util
+paste.workspace = true
+dashmap.workspace = true
+
+# Internal
+common.workspace = true
+yanagi-data.workspace = true
+yanagi-eventgraph.workspace = true
+yanagi-http-client.workspace = true

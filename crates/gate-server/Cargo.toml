@@ -1,0 +1,39 @@
+[package]
+name = "yanagi-gate-server"
+edition = "2021"
+version.workspace = true
+
+[dependencies]
+# Framework
+tokio.workspace = true
+
+# Database
+surrealdb.workspace = true
+
+# Error processing
+anyhow.workspace = true
+thiserror.workspace = true
+
+# Serialization
+hex.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+rbase64.workspace = true
+
+# Tracing
+tracing.workspace = true
+
+# Util
+byteorder.workspace = true
+rand.workspace = true
+paste.workspace = true
+
+# Internal
+kcp = { path = "./kcp" }
+common.workspace = true
+qwer.workspace = true
+qwer-rpc.workspace = true
+protocol.workspace = true
+yanagi-proto.workspace = true
+yanagi-encryption.workspace = true
+yanagi-http-client.workspace = true
