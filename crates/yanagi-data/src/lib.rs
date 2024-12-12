@@ -19,7 +19,7 @@ macro_rules! file_cfg {
                     Self {
                         $(
                             [<$name:snake>]: {
-                                [<root_as_ $name:snake>](archive_file.open(::const_format::formatcp!("{}", ::xxhash_rust::const_xxh64::xxh64(stringify!([<$name:lower>]).as_bytes(), 0))).unwrap()).unwrap()
+                                ::flatbuffers::root::<$name>(archive_file.open(::const_format::formatcp!("{}", ::xxhash_rust::const_xxh64::xxh64(stringify!([<$name:lower>]).as_bytes(), 0))).unwrap()).unwrap()
                             },
                         )*
                     }
@@ -31,6 +31,7 @@ macro_rules! file_cfg {
 
 file_cfg! {
     AvatarBaseTemplateTb;
+    WeaponTemplateTb;
 }
 
 pub fn read_archive_file<R: Read>(buf: R) -> std::io::Result<ArchiveFile> {

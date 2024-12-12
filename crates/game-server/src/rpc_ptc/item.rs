@@ -1,3 +1,6 @@
+use item_info::ItemInfo;
+use tracing::{debug, instrument};
+
 use super::*;
 
 pub async fn on_rpc_get_weapon_data_arg(
@@ -30,14 +33,7 @@ pub async fn on_rpc_get_resource_data_arg(
     Ok(RpcGetResourceDataRet {
         retcode: 0,
         resource_list: protocol::util::build_sync_resource_info_list(&session.player_info),
-        auto_recovery_info: session
-            .player_info
-            .auto_recovery_info
-            .as_ref()
-            .unwrap()
-            .iter()
-            .map(|(id, info)| (*id as u32, info.clone()))
-            .collect(),
+        auto_recovery_info: protocol::util::build_sync_auto_recovery_info(&session.player_info),
     })
 }
 
@@ -69,4 +65,102 @@ pub async fn on_rpc_get_buddy_data_arg(
     _: RpcGetBuddyDataArg,
 ) -> Result<RpcGetBuddyDataRet, i32> {
     Ok(RpcGetBuddyDataRet::default())
+}
+
+#[instrument(skip(ctx, session))]
+pub async fn on_rpc_weapon_dress_arg(
+    ctx: &RpcPtcContext,
+    session: &mut PlayerSession,
+    arg: RpcWeaponDressArg,
+) -> Result<RpcWeaponDressRet, i32> {
+    let Some(target_avatar_uid) = session
+        .player_info
+        .items
+        .as_ref()
+        .unwrap()
+        .iter()
+        .find(|(_, item)| {
+            if let ItemInfo::AvatarInfo { id, .. } = item {
+                *id as u32 == arg.avatar_id
+            } else {
+                false
+            }
+        })
+        .map(|(uid, _)| *uid)
+    else {
+        debug!("target avatar not found");
+        return Err(-1);
+    };
+
+    let Some((_, ItemInfo::Weapon { avatar_uid, .. })) = session
+        .player_info
+        .items
+        .as_mut()
+        .unwrap()
+        .iter_mut()
+        .find(|(uid, _)| (*uid & 0xFFFFFFFF) as u32 == arg.weapon_uid)
+    else {
+        debug!("target weapon not found");
+        return Err(-1);
+    };
+
+    *avatar_uid = target_avatar_uid;
+
+    ctx.send_ptc(PtcPlayerSyncArg {
+        avatar: Some(protocol::util::build_avatar_sync(&session.player_info)),
+        item: Some(protocol::util::build_item_sync(&session.player_info)),
+        ..Default::default()
+    })
+    .await;
+
+    Ok(RpcWeaponDressRet::default())
+}
+
+#[instrument(skip(ctx, session))]
+pub async fn on_rpc_weapon_un_dress_arg(
+    ctx: &RpcPtcContext,
+    session: &mut PlayerSession,
+    arg: RpcWeaponUnDressArg,
+) -> Result<RpcWeaponUnDressRet, i32> {
+    let Some(target_avatar_uid) = session
+        .player_info
+        .items
+        .as_ref()
+        .unwrap()
+        .iter()
+        .find(|(_, item)| {
+            if let ItemInfo::AvatarInfo { id, .. } = item {
+                *id as u32 == arg.avatar_id
+            } else {
+                false
+            }
+        })
+        .map(|(uid, _)| *uid)
+    else {
+        debug!("target avatar not found");
+        return Err(-1);
+    };
+
+    session
+        .player_info
+        .items
+        .as_mut()
+        .unwrap()
+        .iter_mut()
+        .for_each(|(_, item)| {
+            if let ItemInfo::Weapon { avatar_uid, .. } = item {
+                if *avatar_uid == target_avatar_uid {
+                    *avatar_uid = 0;
+                }
+            }
+        });
+
+    ctx.send_ptc(PtcPlayerSyncArg {
+        avatar: Some(protocol::util::build_avatar_sync(&session.player_info)),
+        item: Some(protocol::util::build_item_sync(&session.player_info)),
+        ..Default::default()
+    })
+    .await;
+
+    Ok(RpcWeaponUnDressRet::default())
 }

@@ -310,6 +310,8 @@ pub fn create_starting_player_info(uid: u64, nick_name: &str) -> (UidCounter, Pl
         main_city_avatar_id: Some(1221),
     };
 
+    let first_get_time = time_util::unix_timestamp();
+
     // Give all avatars
     FILECFG
         .get()
@@ -328,7 +330,7 @@ pub fn create_starting_player_info(uid: u64, nick_name: &str) -> (UidCounter, Pl
                     id: tmpl.id(),
                     count: 1,
                     package: 0,
-                    first_get_time: time_util::unix_timestamp(),
+                    first_get_time,
                     star: 6,
                     exp: 0,
                     level: 60,
@@ -338,6 +340,34 @@ pub fn create_starting_player_info(uid: u64, nick_name: &str) -> (UidCounter, Pl
                     skills: PropertyHashMap::Base((0..=6).map(|st| (st, 1)).collect()),
                     is_custom_by_dungeon: false,
                     robot_id: 0,
+                },
+            );
+        });
+
+    // Give all w-engines
+    FILECFG
+        .get()
+        .unwrap()
+        .weapon_template_tb
+        .data()
+        .unwrap_or_default()
+        .iter()
+        .for_each(|tmpl| {
+            let uid = counter.next();
+            player_info.items.as_mut().unwrap().insert(
+                uid,
+                ItemInfo::Weapon {
+                    uid,
+                    id: tmpl.item_id(),
+                    count: 1,
+                    package: 0,
+                    first_get_time,
+                    avatar_uid: 0,
+                    star: 1 + tmpl.star_limit() as u8,
+                    exp: 0,
+                    level: 60,
+                    lock: 0,
+                    refine_level: tmpl.refine_limit() as u8,
                 },
             );
         });

@@ -51,7 +51,7 @@ impl ProtocolPoint {
                 self.channel,
                 to_channel,
                 addr,
-                rpc_arg,
+                &rpc_arg,
                 Duration::ZERO,
                 arg_uid == 0,
                 arg_uid,
@@ -62,7 +62,7 @@ impl ProtocolPoint {
     pub async fn call_rpc(
         &self,
         addr: SocketAddr,
-        rpc_arg: Box<[u8]>,
+        rpc_arg: &[u8],
         timeout: Duration,
     ) -> Option<Box<[u8]>> {
         self.service_backend

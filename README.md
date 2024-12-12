@@ -36,7 +36,7 @@ You should configure each service using their own config files. They're being cr
 
 ### Connecting
 You have to get a compatible game client. Currently supported one is `CNBetaWin1.4.2`, you can [get it here](https://git.xeondev.com/xeon/3/raw/branch/3/ZZZ_1.4_beta_reversedrooms.torrent). Next, you have to apply [this patch](https://git.xeondev.com/HollowSpecialOperationsS6/Yanagi-Patch/releases), it allows you to connect to local server and replaces RSA encryption keys with custom ones.
-##### NOTE: you have to create in-game account, by default, you can do so at https://127.0.0.1:10001/account/register
+##### NOTE: you have to create in-game account, by default, you can do so at http://127.0.0.1:10001/account/register
 ##### NOTE2: to register an account, you should have `yanagi-sdk-server` up and running!
 
 ## Community

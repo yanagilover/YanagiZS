@@ -647,7 +647,7 @@ pub struct Pmnndmijimi {
     #[prost(message, optional, tag = "1")]
     pub iidnjcionhi: ::core::option::Option<Jiahalkoppm>,
     #[prost(message, optional, tag = "2")]
-    pub fmkfjcmjjik: ::core::option::Option<Jiahalkoppm>,
+    pub param: ::core::option::Option<Jiahalkoppm>,
     #[prost(enumeration = "Jpnihhbgepd", tag = "3")]
     pub odnpbhepnoa: i32,
     #[prost(enumeration = "Pcekojidped", tag = "4")]
@@ -2180,7 +2180,7 @@ pub struct Mmiiehdmfgp {
     pub plcmabdfkpf: u32,
     #[xor(9424)]
     #[prost(uint32, tag = "7")]
-    pub ohdkcchhekh: u32,
+    pub weapon_uid: u32,
 }
 #[derive(yanagi_proto_derive::CmdID)]
 #[derive(yanagi_proto_derive::XorFields)]
@@ -5062,7 +5062,7 @@ pub struct Mjfpfcnncgp {
 pub struct Bekmebilpcb {
     #[xor(433)]
     #[prost(int32, tag = "2")]
-    pub fmkfjcmjjik: i32,
+    pub param: i32,
     #[xor(1641)]
     #[prost(int32, tag = "6")]
     pub dajkfnlgcbh: i32,
@@ -7671,7 +7671,7 @@ pub struct Iaklgbglpem {
 #[derive(yanagi_proto_derive::CmdID)]
 #[derive(yanagi_proto_derive::XorFields)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Pokljdnilhl {
+pub struct ItemSync {
     #[prost(uint32, repeated, tag = "1")]
     pub icdbfaacpgk: ::prost::alloc::vec::Vec<u32>,
     #[prost(uint32, repeated, tag = "2")]
@@ -10367,12 +10367,12 @@ pub struct Jnmaoeoikpl {
 #[cmdid(1918)]
 #[derive(yanagi_proto_derive::XorFields)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Ecloiccbepc {
+pub struct GetPlayerNetworkDataScRsp {
     #[xor(11954)]
     #[prost(int32, tag = "10")]
     pub retcode: i32,
     #[prost(message, optional, tag = "5")]
-    pub ccjiedgdklb: ::core::option::Option<Ijihfcaondn>,
+    pub player_network_data: ::core::option::Option<PlayerNetworkData>,
 }
 #[derive(yanagi_proto_derive::CmdID)]
 #[derive(yanagi_proto_derive::XorFields)]
@@ -11854,7 +11854,7 @@ pub struct Njjffeiflin {
     pub mcpmobeikhc: i64,
     #[xor(3054)]
     #[prost(uint32, tag = "9")]
-    pub fmkfjcmjjik: u32,
+    pub param: u32,
     #[xor(4875)]
     #[prost(uint32, tag = "8")]
     pub fceflpmncba: u32,
@@ -12204,7 +12204,7 @@ pub struct Mhbjjkncegl {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Poabpdcddaf {
     #[prost(message, optional, tag = "1")]
-    pub fmkfjcmjjik: ::core::option::Option<Hlndkenohjb>,
+    pub param: ::core::option::Option<Hlndkenohjb>,
     #[prost(uint32, tag = "2")]
     pub khdllfefdko: u32,
     #[prost(uint32, tag = "3")]
@@ -13137,7 +13137,7 @@ pub struct Ohockeiibig {
     pub pbehkahplpc: bool,
     #[xor(5023)]
     #[prost(uint32, tag = "14")]
-    pub ohdkcchhekh: u32,
+    pub weapon_uid: u32,
 }
 #[derive(yanagi_proto_derive::CmdID)]
 #[cmdid(4940)]
@@ -13148,7 +13148,7 @@ pub struct Legpdhniadi {
     pub aoppojcdgge: ::prost::alloc::vec::Vec<Ccpchecifcf>,
     #[xor(11061)]
     #[prost(uint32, tag = "6")]
-    pub fmkfjcmjjik: u32,
+    pub param: u32,
     #[prost(enumeration = "Mdjodbafohl", tag = "14")]
     pub nkjhacjoagi: i32,
 }
@@ -13391,7 +13391,7 @@ pub struct AvatarInfo {
     pub mggafoelnin: u32,
     #[xor(5052)]
     #[prost(uint32, tag = "2")]
-    pub bleigcnljfo: u32,
+    pub cur_weapon_uid: u32,
     #[prost(message, repeated, tag = "5")]
     pub skill_type_level: ::prost::alloc::vec::Vec<AvatarSkillInfo>,
     #[xor(1670)]
@@ -13704,7 +13704,7 @@ pub struct Pibgkaalkka {
     #[prost(message, optional, tag = "1")]
     pub iidnjcionhi: ::core::option::Option<Jiahalkoppm>,
     #[prost(message, optional, tag = "2")]
-    pub fmkfjcmjjik: ::core::option::Option<Jiahalkoppm>,
+    pub param: ::core::option::Option<Jiahalkoppm>,
     #[prost(enumeration = "Jpnihhbgepd", tag = "3")]
     pub odnpbhepnoa: i32,
     #[prost(enumeration = "Pcekojidped", tag = "4")]
@@ -13872,10 +13872,10 @@ pub struct Njedfobgbll {
 #[cmdid(2244)]
 #[derive(yanagi_proto_derive::XorFields)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct Pkfmcbgahle {
+pub struct WeaponDressCsReq {
     #[xor(3727)]
     #[prost(uint32, tag = "13")]
-    pub ohdkcchhekh: u32,
+    pub weapon_uid: u32,
     #[xor(2088)]
     #[prost(uint32, tag = "1")]
     pub avatar_id: u32,
@@ -14543,7 +14543,7 @@ pub struct Mmncdfccjjl {
     #[prost(enumeration = "TimePeriodType", tag = "4")]
     pub time_period: i32,
     #[prost(enumeration = "Ompbfjdfljk", tag = "5")]
-    pub iiggaglkijl: i32,
+    pub avatar: i32,
 }
 #[derive(yanagi_proto_derive::CmdID)]
 #[cmdid(737)]
@@ -15700,7 +15700,7 @@ pub struct Mcncgpompai {
 #[derive(yanagi_proto_derive::CmdID)]
 #[derive(yanagi_proto_derive::XorFields)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Ijihfcaondn {
+pub struct PlayerNetworkData {
     #[prost(message, optional, tag = "5")]
     pub lbfnphfiaef: ::core::option::Option<Gpfpgifbdfp>,
     #[prost(message, optional, tag = "9")]
@@ -16129,7 +16129,7 @@ pub struct PlayerOperationCsReq {
     pub cjbdlgcdgcb: bool,
     #[xor(5029)]
     #[prost(int32, tag = "14")]
-    pub fmkfjcmjjik: i32,
+    pub param: i32,
     #[prost(bytes = "vec", tag = "15")]
     pub info: ::prost::alloc::vec::Vec<u8>,
     #[xor(8845)]
@@ -16205,13 +16205,13 @@ pub struct Kndfnifkdac {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct PlayerSyncScNotify {
     #[prost(message, optional, tag = "1")]
-    pub iiggaglkijl: ::core::option::Option<Ojmfigbbpli>,
+    pub avatar: ::core::option::Option<AvatarSync>,
     #[prost(message, optional, tag = "2")]
     pub gllgbdhaphh: ::core::option::Option<Jpcgnimohil>,
     #[prost(message, optional, tag = "3")]
     pub dmfpbeopfko: ::core::option::Option<Flbfjkfbdnh>,
     #[prost(message, optional, tag = "4")]
-    pub cgcgfgfnhne: ::core::option::Option<Pokljdnilhl>,
+    pub item: ::core::option::Option<ItemSync>,
     #[prost(message, optional, tag = "5")]
     pub anblgeifhjh: ::core::option::Option<Pdfpkehdged>,
     #[prost(message, optional, tag = "6")]
@@ -16904,7 +16904,7 @@ pub struct Eilbfkaaahk {
     #[prost(int32, tag = "11")]
     pub retcode: i32,
     #[prost(message, optional, tag = "9")]
-    pub ccjiedgdklb: ::core::option::Option<Ijihfcaondn>,
+    pub player_network_data: ::core::option::Option<PlayerNetworkData>,
 }
 #[derive(yanagi_proto_derive::CmdID)]
 #[derive(yanagi_proto_derive::XorFields)]
@@ -17371,7 +17371,7 @@ pub struct Anaapljedem {
     #[prost(string, tag = "2")]
     pub hhdhdjphojg: ::prost::alloc::string::String,
     #[prost(message, repeated, tag = "3")]
-    pub fmkfjcmjjik: ::prost::alloc::vec::Vec<Jijoflccbpj>,
+    pub param: ::prost::alloc::vec::Vec<Jijoflccbpj>,
     #[prost(message, repeated, tag = "4")]
     pub jbmhoedjjlc: ::prost::alloc::vec::Vec<Ifplpheneno>,
 }
@@ -18724,7 +18724,7 @@ pub struct Adgncnkkbhj {
 pub struct Pggkcgckcal {
     #[xor(5182)]
     #[prost(uint32, tag = "7")]
-    pub fmkfjcmjjik: u32,
+    pub param: u32,
     #[prost(uint32, repeated, tag = "14")]
     pub bfgenanklmg: ::prost::alloc::vec::Vec<u32>,
     #[prost(enumeration = "Dniekkmfapo", tag = "10")]
@@ -18966,7 +18966,7 @@ pub struct Imphglieghn {
 #[cmdid(8854)]
 #[derive(yanagi_proto_derive::XorFields)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct Akbciceipfe {
+pub struct GetPlayerNetworkDataCsReq {
     #[xor(1373)]
     #[prost(uint32, tag = "10")]
     pub tag: u32,
@@ -19490,7 +19490,7 @@ pub struct RefreshSectionScRsp {
 #[cmdid(6782)]
 #[derive(yanagi_proto_derive::XorFields)]
 #[derive(Clone, Copy, PartialEq, ::prost::Message)]
-pub struct Hpbcepaeoda {
+pub struct WeaponUnDressCsReq {
     #[xor(11698)]
     #[prost(uint32, tag = "15")]
     pub avatar_id: u32,
@@ -25331,7 +25331,7 @@ pub struct Ieeigfmmmoo {
     #[prost(enumeration = "Heonecgjbdl", tag = "1")]
     pub balojeikfko: i32,
     #[prost(uint32, tag = "2")]
-    pub fmkfjcmjjik: u32,
+    pub param: u32,
 }
 #[derive(yanagi_proto_derive::CmdID)]
 #[derive(yanagi_proto_derive::XorFields)]
@@ -25422,7 +25422,7 @@ pub struct AvatarWishlistPlan {
     #[prost(uint32, tag = "3")]
     pub avatar_plan_param2: u32,
     #[prost(uint32, tag = "4")]
-    pub ohdkcchhekh: u32,
+    pub weapon_uid: u32,
     #[prost(uint32, tag = "5")]
     pub fpdghbnfdha: u32,
     #[prost(uint32, tag = "6")]
@@ -30770,7 +30770,7 @@ pub struct Pfbijfegcce {
     pub lgegnbdmjnl: u32,
     #[xor(13905)]
     #[prost(uint32, tag = "2")]
-    pub ohdkcchhekh: u32,
+    pub weapon_uid: u32,
 }
 #[derive(yanagi_proto_derive::CmdID)]
 #[cmdid(2014)]
@@ -30803,7 +30803,7 @@ pub struct Jjpgjfacajh {
     #[prost(string, tag = "3")]
     pub iidnjcionhi: ::prost::alloc::string::String,
     #[prost(int32, tag = "4")]
-    pub fmkfjcmjjik: i32,
+    pub param: i32,
     #[prost(enumeration = "Jpnihhbgepd", tag = "5")]
     pub odnpbhepnoa: i32,
 }
@@ -32933,7 +32933,7 @@ pub struct Onbnjigpcna {}
 #[derive(yanagi_proto_derive::CmdID)]
 #[derive(yanagi_proto_derive::XorFields)]
 #[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Ojmfigbbpli {
+pub struct AvatarSync {
     #[prost(message, repeated, tag = "3")]
     pub avatar_list: ::prost::alloc::vec::Vec<AvatarInfo>,
     #[prost(uint32, repeated, tag = "14")]
@@ -34206,7 +34206,7 @@ pub struct Ggecejkbaef {
     pub paaaeeobgoa: i32,
     #[xor(2241)]
     #[prost(int32, tag = "5")]
-    pub fmkfjcmjjik: i32,
+    pub param: i32,
 }
 #[derive(yanagi_proto_derive::CmdID)]
 #[derive(yanagi_proto_derive::XorFields)]
@@ -34279,7 +34279,7 @@ pub struct Anhibikpjdf {
     #[prost(enumeration = "Ogepfnogkhm", tag = "1")]
     pub r#type: i32,
     #[prost(message, optional, tag = "2")]
-    pub fmkfjcmjjik: ::core::option::Option<Ojeofbgcaal>,
+    pub param: ::core::option::Option<Ojeofbgcaal>,
 }
 #[derive(yanagi_proto_derive::CmdID)]
 #[cmdid(5491)]

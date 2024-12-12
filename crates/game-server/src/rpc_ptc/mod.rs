@@ -180,5 +180,9 @@ pub fn register_handlers(listen_point: &RpcPtcPoint) {
         RpcBattleReport;
         RpcEndBattle;
         RpcLeaveCurDungeon;
+
+        RpcGetPlayerNetworkData;
+        RpcWeaponDress;
+        RpcWeaponUnDress;
     };
 }

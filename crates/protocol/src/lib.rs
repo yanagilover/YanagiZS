@@ -67,6 +67,7 @@ pub struct AvatarInfo {
     pub unlocked_talent_num: u32,
     pub talent_switch_list: Vec<bool>,
     pub skill_type_level: Vec<AvatarSkillInfo>,
+    pub cur_weapon_uid: u32,
 }
 
 #[derive(OctData, Debug, Default)]
@@ -805,7 +806,9 @@ pub struct RpcSavePosInMainCityRet {
 
 #[derive(OctData, Debug, Default, ProtocolID)]
 #[id(156)]
-pub struct RpcPlayerOperationArg {}
+pub struct RpcPlayerOperationArg {
+    pub param: i32,
+}
 
 #[derive(OctData, Debug, Default)]
 pub struct RpcPlayerOperationRet {
@@ -929,10 +932,25 @@ pub struct RpcModMainCityAvatarRet {
     pub retcode: i32,
 }
 
+#[derive(OctData, Debug, Default)]
+pub struct AvatarSync {
+    pub avatar_list: Vec<AvatarInfo>,
+}
+
+#[derive(OctData, Debug, Default)]
+pub struct ItemSync {
+    pub weapon_list: Vec<WeaponInfo>,
+    pub equip_list: Vec<EquipInfo>,
+    pub resource_list: Vec<ResourceInfo>,
+    pub auto_recovery_info: HashMap<u32, AutoRecoveryInfo>,
+}
+
 #[derive(OctData, Debug, Default, ProtocolID)]
 #[id(500)]
 pub struct PtcPlayerSyncArg {
     pub basic_info: Option<PlayerBasicInfo>,
+    pub avatar: Option<AvatarSync>,
+    pub item: Option<ItemSync>,
 }
 
 #[derive(OctData, Debug, Default, ProtocolID)]
@@ -1115,5 +1133,41 @@ pub struct RpcLeaveCurDungeonArg {}
 
 #[derive(OctData, Debug, Default)]
 pub struct RpcLeaveCurDungeonRet {
+    pub retcode: i32,
+}
+
+#[derive(OctData, Debug, Default, ProtocolID)]
+#[id(178)]
+pub struct RpcGetPlayerNetworkDataArg {}
+
+#[derive(OctData, Debug, Default)]
+pub struct PlayerNetworkData {}
+
+#[derive(OctData, Debug, Default)]
+pub struct RpcGetPlayerNetworkDataRet {
+    pub retcode: i32,
+    pub player_network_data: Option<PlayerNetworkData>,
+}
+
+#[derive(OctData, Debug, Default, ProtocolID)]
+#[id(179)]
+pub struct RpcWeaponDressArg {
+    pub avatar_id: u32,
+    pub weapon_uid: u32,
+}
+
+#[derive(OctData, Debug, Default)]
+pub struct RpcWeaponDressRet {
+    pub retcode: i32,
+}
+
+#[derive(OctData, Debug, Default, ProtocolID)]
+#[id(180)]
+pub struct RpcWeaponUnDressArg {
+    pub avatar_id: u32,
+}
+
+#[derive(OctData, Debug, Default)]
+pub struct RpcWeaponUnDressRet {
     pub retcode: i32,
 }

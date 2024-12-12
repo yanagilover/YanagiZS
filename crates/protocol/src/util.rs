@@ -1,7 +1,9 @@
+use std::collections::HashMap;
+
 use crate::{
     item_info::ItemInfo, player_info::PlayerInfo, scene_info::SceneInfo, AvatarInfo,
-    AvatarSkillInfo, AvatarUnitInfo, EquipInfo, PlayerBasicInfo, PtcHallRefreshArg, ResourceInfo,
-    WeaponInfo,
+    AvatarSkillInfo, AvatarSync, AvatarUnitInfo, EquipInfo, ItemSync, PlayerBasicInfo,
+    PtcHallRefreshArg, ResourceInfo, WeaponInfo,
 };
 
 pub fn build_player_basic_info(player_info: &PlayerInfo) -> PlayerBasicInfo {
@@ -223,7 +225,7 @@ pub fn build_sync_avatar_info_list(player_info: &PlayerInfo) -> Vec<AvatarInfo> 
         .as_ref()
         .unwrap()
         .iter()
-        .map(|(_, item)| {
+        .map(|(uid, item)| {
             if let ItemInfo::AvatarInfo {
                 id,
                 first_get_time,
@@ -246,6 +248,20 @@ pub fn build_sync_avatar_info_list(player_info: &PlayerInfo) -> Vec<AvatarInfo> 
                     unlocked_talent_num: *unlocked_talent_num as u32,
                     first_get_time: *first_get_time as i64,
                     talent_switch_list: talent_switch.clone(),
+                    cur_weapon_uid: player_info
+                        .items
+                        .as_ref()
+                        .unwrap()
+                        .iter()
+                        .find(|(_, item)| {
+                            if let ItemInfo::Weapon { avatar_uid, .. } = item {
+                                *avatar_uid == *uid
+                            } else {
+                                false
+                            }
+                        })
+                        .map(|(uid, _)| (*uid & 0xFFFFFFFF) as u32)
+                        .unwrap_or(0),
                     skill_type_level: skills
                         .iter()
                         .map(|(ty, lv)| AvatarSkillInfo {
@@ -357,4 +373,31 @@ pub fn build_sync_resource_info_list(player_info: &PlayerInfo) -> Vec<ResourceIn
         })
         .flatten()
         .collect()
+}
+
+pub fn build_sync_auto_recovery_info(
+    player_info: &PlayerInfo,
+) -> HashMap<u32, crate::AutoRecoveryInfo> {
+    player_info
+        .auto_recovery_info
+        .as_ref()
+        .unwrap()
+        .iter()
+        .map(|(id, info)| (*id as u32, info.clone()))
+        .collect()
+}
+
+pub fn build_item_sync(player_info: &PlayerInfo) -> ItemSync {
+    ItemSync {
+        weapon_list: build_sync_weapon_info_list(player_info),
+        equip_list: build_sync_equip_info_list(player_info),
+        resource_list: build_sync_resource_info_list(player_info),
+        auto_recovery_info: build_sync_auto_recovery_info(player_info),
+    }
+}
+
+pub fn build_avatar_sync(player_info: &PlayerInfo) -> AvatarSync {
+    AvatarSync {
+        avatar_list: build_sync_avatar_info_list(player_info),
+    }
 }

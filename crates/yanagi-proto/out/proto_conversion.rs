@@ -556,6 +556,38 @@ impl From<ReportUiLayoutPlatformCsReq> for ::protocol::RpcReportUiLayoutPlatform
     }
 }
 #[allow(unused)]
+impl From<::protocol::ItemSync> for ItemSync {
+    fn from(value: ::protocol::ItemSync) -> Self {
+        Self {
+            weapon_list: value.weapon_list.into_iter().map(|v| v.into()).collect(),
+            auto_recovery_info: value
+                .auto_recovery_info
+                .into_iter()
+                .map(|(k, v)| (k.into(), v.into()))
+                .collect(),
+            resource_list: value.resource_list.into_iter().map(|v| v.into()).collect(),
+            equip_list: value.equip_list.into_iter().map(|v| v.into()).collect(),
+            ..Default::default()
+        }
+    }
+}
+#[allow(unused)]
+impl From<ItemSync> for ::protocol::ItemSync {
+    fn from(value: ItemSync) -> Self {
+        Self {
+            weapon_list: value.weapon_list.into_iter().map(|v| v.into()).collect(),
+            auto_recovery_info: value
+                .auto_recovery_info
+                .into_iter()
+                .map(|(k, v)| (k.into(), v.into()))
+                .collect(),
+            resource_list: value.resource_list.into_iter().map(|v| v.into()).collect(),
+            equip_list: value.equip_list.into_iter().map(|v| v.into()).collect(),
+            ..Default::default()
+        }
+    }
+}
+#[allow(unused)]
 impl From<::protocol::RpcBattleReportArg> for BattleReportCsReq {
     fn from(value: ::protocol::RpcBattleReportArg) -> Self {
         Self { ..Default::default() }
@@ -703,6 +735,26 @@ impl From<EndBattleScRsp> for ::protocol::RpcEndBattleRet {
         Self {
             battle_reward: value.battle_reward.map(|v| v.into()).unwrap_or_default(),
             retcode: value.retcode.into(),
+            ..Default::default()
+        }
+    }
+}
+#[allow(unused)]
+impl From<::protocol::RpcGetPlayerNetworkDataRet> for GetPlayerNetworkDataScRsp {
+    fn from(value: ::protocol::RpcGetPlayerNetworkDataRet) -> Self {
+        Self {
+            retcode: value.retcode.into(),
+            player_network_data: value.player_network_data.map(|v| v.into()),
+            ..Default::default()
+        }
+    }
+}
+#[allow(unused)]
+impl From<GetPlayerNetworkDataScRsp> for ::protocol::RpcGetPlayerNetworkDataRet {
+    fn from(value: GetPlayerNetworkDataScRsp) -> Self {
+        Self {
+            retcode: value.retcode.into(),
+            player_network_data: value.player_network_data.map(|v| v.into()),
             ..Default::default()
         }
     }
@@ -935,6 +987,7 @@ impl From<::protocol::AvatarInfo> for AvatarInfo {
             level: value.level.into(),
             first_get_time: value.first_get_time.into(),
             exp: value.exp.into(),
+            cur_weapon_uid: value.cur_weapon_uid.into(),
             skill_type_level: value
                 .skill_type_level
                 .into_iter()
@@ -960,6 +1013,7 @@ impl From<AvatarInfo> for ::protocol::AvatarInfo {
             level: value.level.into(),
             first_get_time: value.first_get_time.into(),
             exp: value.exp.into(),
+            cur_weapon_uid: value.cur_weapon_uid.into(),
             skill_type_level: value
                 .skill_type_level
                 .into_iter()
@@ -1032,6 +1086,26 @@ impl From<JourneyInfo> for ::protocol::JourneyInfo {
     }
 }
 #[allow(unused)]
+impl From<::protocol::RpcWeaponDressArg> for WeaponDressCsReq {
+    fn from(value: ::protocol::RpcWeaponDressArg) -> Self {
+        Self {
+            weapon_uid: value.weapon_uid.into(),
+            avatar_id: value.avatar_id.into(),
+            ..Default::default()
+        }
+    }
+}
+#[allow(unused)]
+impl From<WeaponDressCsReq> for ::protocol::RpcWeaponDressArg {
+    fn from(value: WeaponDressCsReq) -> Self {
+        Self {
+            weapon_uid: value.weapon_uid.into(),
+            avatar_id: value.avatar_id.into(),
+            ..Default::default()
+        }
+    }
+}
+#[allow(unused)]
 impl From<::protocol::RpcModMainCityAvatarArg> for ModMainCityAvatarCsReq {
     fn from(value: ::protocol::RpcModMainCityAvatarArg) -> Self {
         Self {
@@ -1090,6 +1164,18 @@ impl From<GetBabelTowerDataCsReq> for ::protocol::RpcGetBabelTowerDataArg {
     }
 }
 #[allow(unused)]
+impl From<::protocol::PlayerNetworkData> for PlayerNetworkData {
+    fn from(value: ::protocol::PlayerNetworkData) -> Self {
+        Self { ..Default::default() }
+    }
+}
+#[allow(unused)]
+impl From<PlayerNetworkData> for ::protocol::PlayerNetworkData {
+    fn from(value: PlayerNetworkData) -> Self {
+        Self { ..Default::default() }
+    }
+}
+#[allow(unused)]
 impl From<::protocol::PtcEnterSceneArg> for EnterSceneScNotify {
     fn from(value: ::protocol::PtcEnterSceneArg) -> Self {
         Self {
@@ -1124,19 +1210,27 @@ impl From<GetBuddyDataCsReq> for ::protocol::RpcGetBuddyDataArg {
 #[allow(unused)]
 impl From<::protocol::RpcPlayerOperationArg> for PlayerOperationCsReq {
     fn from(value: ::protocol::RpcPlayerOperationArg) -> Self {
-        Self { ..Default::default() }
+        Self {
+            param: value.param.into(),
+            ..Default::default()
+        }
     }
 }
 #[allow(unused)]
 impl From<PlayerOperationCsReq> for ::protocol::RpcPlayerOperationArg {
     fn from(value: PlayerOperationCsReq) -> Self {
-        Self { ..Default::default() }
+        Self {
+            param: value.param.into(),
+            ..Default::default()
+        }
     }
 }
 #[allow(unused)]
 impl From<::protocol::PtcPlayerSyncArg> for PlayerSyncScNotify {
     fn from(value: ::protocol::PtcPlayerSyncArg) -> Self {
         Self {
+            avatar: value.avatar.map(|v| v.into()),
+            item: value.item.map(|v| v.into()),
             basic_info: value.basic_info.map(|v| v.into()),
             ..Default::default()
         }
@@ -1146,6 +1240,8 @@ impl From<::protocol::PtcPlayerSyncArg> for PlayerSyncScNotify {
 impl From<PlayerSyncScNotify> for ::protocol::PtcPlayerSyncArg {
     fn from(value: PlayerSyncScNotify) -> Self {
         Self {
+            avatar: value.avatar.map(|v| v.into()),
+            item: value.item.map(|v| v.into()),
             basic_info: value.basic_info.map(|v| v.into()),
             ..Default::default()
         }
@@ -1324,6 +1420,18 @@ impl From<GetAbyssInfoScRsp> for ::protocol::RpcGetAbyssInfoRet {
     }
 }
 #[allow(unused)]
+impl From<::protocol::RpcGetPlayerNetworkDataArg> for GetPlayerNetworkDataCsReq {
+    fn from(value: ::protocol::RpcGetPlayerNetworkDataArg) -> Self {
+        Self { ..Default::default() }
+    }
+}
+#[allow(unused)]
+impl From<GetPlayerNetworkDataCsReq> for ::protocol::RpcGetPlayerNetworkDataArg {
+    fn from(value: GetPlayerNetworkDataCsReq) -> Self {
+        Self { ..Default::default() }
+    }
+}
+#[allow(unused)]
 impl From<::protocol::RpcGetNewsStandDataRet> for GetNewsStandDataScRsp {
     fn from(value: ::protocol::RpcGetNewsStandDataRet) -> Self {
         Self {
@@ -1359,6 +1467,24 @@ impl From<RefreshSectionScRsp> for ::protocol::RpcRefreshSectionRet {
         Self {
             retcode: value.retcode.into(),
             refresh_status: value.refresh_status.into(),
+            ..Default::default()
+        }
+    }
+}
+#[allow(unused)]
+impl From<::protocol::RpcWeaponUnDressArg> for WeaponUnDressCsReq {
+    fn from(value: ::protocol::RpcWeaponUnDressArg) -> Self {
+        Self {
+            avatar_id: value.avatar_id.into(),
+            ..Default::default()
+        }
+    }
+}
+#[allow(unused)]
+impl From<WeaponUnDressCsReq> for ::protocol::RpcWeaponUnDressArg {
+    fn from(value: WeaponUnDressCsReq) -> Self {
+        Self {
+            avatar_id: value.avatar_id.into(),
             ..Default::default()
         }
     }
@@ -2208,6 +2334,24 @@ impl From<GetPlayerMailsCsReq> for ::protocol::RpcGetPlayerMailsArg {
     }
 }
 #[allow(unused)]
+impl From<::protocol::AvatarSync> for AvatarSync {
+    fn from(value: ::protocol::AvatarSync) -> Self {
+        Self {
+            avatar_list: value.avatar_list.into_iter().map(|v| v.into()).collect(),
+            ..Default::default()
+        }
+    }
+}
+#[allow(unused)]
+impl From<AvatarSync> for ::protocol::AvatarSync {
+    fn from(value: AvatarSync) -> Self {
+        Self {
+            avatar_list: value.avatar_list.into_iter().map(|v| v.into()).collect(),
+            ..Default::default()
+        }
+    }
+}
+#[allow(unused)]
 impl From<::protocol::RpcEndBattleArg> for EndBattleCsReq {
     fn from(value: ::protocol::RpcEndBattleArg) -> Self {
         Self { ..Default::default() }
@@ -3054,7 +3198,12 @@ macro_rules! decode_and_forward_proto {
         rpc_arg = ::protocol::RpcGetChatEmojiListArg::from(packet.body); let rpc_ret :
         ::protocol::RpcGetChatEmojiListRet = $point .call_rpc($addr, rpc_arg,
         $middlewares, $timeout). await ?; $session .send_null_rsp(packet.head.packet_id);
-        }, ModMainCityAvatarCsReq::CMD_ID => { let packet = NetPacket:: <
+        }, WeaponDressCsReq::CMD_ID => { let packet = NetPacket:: <
+        ::yanagi_proto::WeaponDressCsReq > ::decode($buf) ?; let rpc_arg =
+        ::protocol::RpcWeaponDressArg::from(packet.body); let rpc_ret :
+        ::protocol::RpcWeaponDressRet = $point .call_rpc($addr, rpc_arg, $middlewares,
+        $timeout). await ?; $session .send_null_rsp(packet.head.packet_id); },
+        ModMainCityAvatarCsReq::CMD_ID => { let packet = NetPacket:: <
         ::yanagi_proto::ModMainCityAvatarCsReq > ::decode($buf) ?; let rpc_arg =
         ::protocol::RpcModMainCityAvatarArg::from(packet.body); let rpc_ret :
         ::protocol::RpcModMainCityAvatarRet = $point .call_rpc($addr, rpc_arg,
@@ -3100,11 +3249,23 @@ macro_rules! decode_and_forward_proto {
         : ::protocol::RpcGetClientSystemsInfoRet = $point .call_rpc($addr, rpc_arg,
         $middlewares, $timeout). await ?; let proto_rsp =
         ::yanagi_proto::GetClientSystemsInfoScRsp::from(rpc_ret); $session
-        .send_rsp(packet.head.packet_id, proto_rsp); }, RefreshSectionCsReq::CMD_ID => {
-        let packet = NetPacket:: < ::yanagi_proto::RefreshSectionCsReq > ::decode($buf)
-        ?; let rpc_arg = ::protocol::RpcRefreshSectionArg::from(packet.body); let rpc_ret
-        : ::protocol::RpcRefreshSectionRet = $point .call_rpc($addr, rpc_arg,
+        .send_rsp(packet.head.packet_id, proto_rsp); }, GetPlayerNetworkDataCsReq::CMD_ID
+        => { let packet = NetPacket:: < ::yanagi_proto::GetPlayerNetworkDataCsReq >
+        ::decode($buf) ?; let rpc_arg =
+        ::protocol::RpcGetPlayerNetworkDataArg::from(packet.body); let rpc_ret :
+        ::protocol::RpcGetPlayerNetworkDataRet = $point .call_rpc($addr, rpc_arg,
         $middlewares, $timeout). await ?; let proto_rsp =
+        ::yanagi_proto::GetPlayerNetworkDataScRsp::from(rpc_ret); $session
+        .send_rsp(packet.head.packet_id, proto_rsp); }, WeaponUnDressCsReq::CMD_ID => {
+        let packet = NetPacket:: < ::yanagi_proto::WeaponUnDressCsReq > ::decode($buf) ?;
+        let rpc_arg = ::protocol::RpcWeaponUnDressArg::from(packet.body); let rpc_ret :
+        ::protocol::RpcWeaponUnDressRet = $point .call_rpc($addr, rpc_arg, $middlewares,
+        $timeout). await ?; $session .send_null_rsp(packet.head.packet_id); },
+        RefreshSectionCsReq::CMD_ID => { let packet = NetPacket:: <
+        ::yanagi_proto::RefreshSectionCsReq > ::decode($buf) ?; let rpc_arg =
+        ::protocol::RpcRefreshSectionArg::from(packet.body); let rpc_ret :
+        ::protocol::RpcRefreshSectionRet = $point .call_rpc($addr, rpc_arg, $middlewares,
+        $timeout). await ?; let proto_rsp =
         ::yanagi_proto::RefreshSectionScRsp::from(rpc_ret); $session .send_rsp(packet
         .head.packet_id, proto_rsp); }, PlayerTransactionCsReq::CMD_ID => { let packet =
         NetPacket:: < ::yanagi_proto::PlayerTransactionCsReq > ::decode($buf) ?; let
@@ -3363,11 +3524,12 @@ macro_rules! impl_qwer_to_proto_match {
         ::protocol::RpcGetWeaponDataArg::PROTOCOL_ID => $process_proto_message
         (GetWeaponDataCsReq::from(qwer)), ::protocol::RpcGetChatEmojiListArg::PROTOCOL_ID
         => $process_proto_message (GetChatEmojiListCsReq::from(qwer)),
-        ::protocol::RpcModMainCityAvatarArg::PROTOCOL_ID => $process_proto_message
-        (ModMainCityAvatarCsReq::from(qwer)), ::protocol::RpcGetCafeDataArg::PROTOCOL_ID
-        => $process_proto_message (GetCafeDataCsReq::from(qwer)),
-        ::protocol::RpcGetAvatarDataArg::PROTOCOL_ID => $process_proto_message
-        (GetAvatarDataCsReq::from(qwer)),
+        ::protocol::RpcWeaponDressArg::PROTOCOL_ID => $process_proto_message
+        (WeaponDressCsReq::from(qwer)), ::protocol::RpcModMainCityAvatarArg::PROTOCOL_ID
+        => $process_proto_message (ModMainCityAvatarCsReq::from(qwer)),
+        ::protocol::RpcGetCafeDataArg::PROTOCOL_ID => $process_proto_message
+        (GetCafeDataCsReq::from(qwer)), ::protocol::RpcGetAvatarDataArg::PROTOCOL_ID =>
+        $process_proto_message (GetAvatarDataCsReq::from(qwer)),
         ::protocol::RpcGetBabelTowerDataArg::PROTOCOL_ID => $process_proto_message
         (GetBabelTowerDataCsReq::from(qwer)), ::protocol::PtcEnterSceneArg::PROTOCOL_ID
         => $process_proto_message (EnterSceneScNotify::from(qwer)),
@@ -3381,8 +3543,11 @@ macro_rules! impl_qwer_to_proto_match {
         (PlayerLoginCsReq::from(qwer)),
         ::protocol::RpcGetClientSystemsInfoArg::PROTOCOL_ID => $process_proto_message
         (GetClientSystemsInfoCsReq::from(qwer)),
-        ::protocol::RpcRefreshSectionArg::PROTOCOL_ID => $process_proto_message
-        (RefreshSectionCsReq::from(qwer)),
+        ::protocol::RpcGetPlayerNetworkDataArg::PROTOCOL_ID => $process_proto_message
+        (GetPlayerNetworkDataCsReq::from(qwer)),
+        ::protocol::RpcWeaponUnDressArg::PROTOCOL_ID => $process_proto_message
+        (WeaponUnDressCsReq::from(qwer)), ::protocol::RpcRefreshSectionArg::PROTOCOL_ID
+        => $process_proto_message (RefreshSectionCsReq::from(qwer)),
         ::protocol::RpcPlayerTransactionArg::PROTOCOL_ID => $process_proto_message
         (PlayerTransactionCsReq::from(qwer)),
         ::protocol::RpcGetAbyssArpeggioDataArg::PROTOCOL_ID => $process_proto_message

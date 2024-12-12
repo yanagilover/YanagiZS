@@ -107,3 +107,14 @@ pub async fn on_rpc_player_transaction_arg(
         transaction: format!("{player_uid}-{scene_uid}"),
     })
 }
+
+pub async fn on_rpc_get_player_network_data_arg(
+    _: &RpcPtcContext,
+    _: &mut PlayerSession,
+    _: RpcGetPlayerNetworkDataArg,
+) -> Result<RpcGetPlayerNetworkDataRet, i32> {
+    Ok(RpcGetPlayerNetworkDataRet {
+        retcode: 0,
+        player_network_data: Some(PlayerNetworkData::default()),
+    })
+}

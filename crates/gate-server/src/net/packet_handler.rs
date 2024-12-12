@@ -51,7 +51,7 @@ pub async fn decode_and_handle(
                 session.rpc_ptc_point.lock().await,
                 end_point,
                 middleware_list,
-                Duration::from_secs(30)
+                Duration::from_secs(2)
             )
         }
         cmd_id => debug!("received cmd_id: {cmd_id}, session is not logged in, expected PlayerGetTokenCsReq (cmd_id: {})", PlayerGetTokenCsReq::CMD_ID),

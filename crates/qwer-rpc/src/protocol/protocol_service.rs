@@ -114,7 +114,7 @@ impl ProtocolServiceFrontendImpl {
         from_channel: u16,
         to_channel: u16,
         to_addr: SocketAddr,
-        body: Box<[u8]>,
+        body: &[u8],
         timeout: Duration,
         is_ptc: bool,
         arg_uid: u64,

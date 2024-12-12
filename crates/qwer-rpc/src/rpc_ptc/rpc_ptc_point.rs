@@ -232,10 +232,7 @@ impl RpcPtcPoint {
 
         marshal_middleware_list(&mut ProtocolStream::new(&mut cursor), &middleware_list).unwrap();
 
-        let ret_buf = self
-            .protocol_point
-            .call_rpc(addr, buf.into_boxed_slice(), timeout)
-            .await?;
+        let ret_buf = self.protocol_point.call_rpc(addr, &buf, timeout).await?;
 
         Some(RpcRawRet(ret_buf))
     }
