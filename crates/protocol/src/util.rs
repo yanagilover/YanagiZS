@@ -8,18 +8,12 @@ use crate::{
 
 pub fn build_player_basic_info(player_info: &PlayerInfo) -> PlayerBasicInfo {
     PlayerBasicInfo {
-        last_enter_world_timestamp: player_info.last_enter_world_timestamp.unwrap_or_default()
-            as i64,
-        avatar_id: player_info.avatar_id.unwrap_or_default(),
-        player_avatar_id: player_info.avatar_id.unwrap_or_default(),
-        main_city_avatar_id: player_info.main_city_avatar_id.unwrap_or_default(),
-        nick_name: player_info.nick_name.clone().unwrap_or_default(),
-        level: player_info
-            .yorozuya_info
-            .as_ref()
-            .map(|yi| yi.yorozuya_level)
-            .flatten()
-            .unwrap_or_default(),
+        last_enter_world_timestamp: *player_info.last_enter_world_timestamp() as i64,
+        avatar_id: *player_info.avatar_id(),
+        player_avatar_id: *player_info.avatar_id(),
+        main_city_avatar_id: *player_info.main_city_avatar_id(),
+        nick_name: player_info.nick_name().clone(),
+        level: *player_info.yorozuya_info().yorozuya_level(),
     }
 }
 
@@ -27,16 +21,13 @@ pub fn build_client_scene_info(
     player_info: &PlayerInfo,
     scene_uid: u64,
 ) -> Option<crate::SceneInfo> {
-    let dungeon_collection = player_info.dungeon_collection.as_ref().unwrap();
-    let Some(scene_info) = dungeon_collection.scenes.as_ref().unwrap().get(&scene_uid) else {
+    let dungeon_collection = player_info.dungeon_collection();
+    let Some(scene_info) = dungeon_collection.scenes().get(&scene_uid) else {
         return None;
     };
 
-    let player_pos_in_main_city = player_info.pos_in_main_city.as_ref().unwrap();
-    let initial_transform = player_pos_in_main_city
-        .initial_pos_id
-        .clone()
-        .unwrap_or_default();
+    let player_pos_in_main_city = player_info.pos_in_main_city();
+    let initial_transform = player_pos_in_main_city.initial_pos_id().clone();
 
     Some(match scene_info {
         SceneInfo::Hall {
@@ -49,35 +40,22 @@ pub fn build_client_scene_info(
             scene_type: 1,
             hall_scene_info: Some(crate::HallSceneInfo {
                 section_id: *section_id as u32,
-                player_avatar_id: player_info.avatar_id.unwrap_or_default(),
-                main_city_avatar_id: player_info.main_city_avatar_id.unwrap_or_default(),
-                bgm_id: player_info
-                    .bgm_info
-                    .as_ref()
-                    .map(|bgm| bgm.bgm_id.clone())
-                    .flatten()
-                    .unwrap_or_default(),
+                player_avatar_id: *player_info.avatar_id(),
+                main_city_avatar_id: *player_info.main_city_avatar_id(),
+                bgm_id: *player_info.bgm_info().bgm_id(),
                 day_of_week: main_city_time_info.day_of_week as u32,
                 time_of_day: main_city_time_info.initial_time,
                 camera_x: *camera_x,
                 camera_y: *camera_y,
                 position: initial_transform.is_empty().then(|| crate::Transform {
-                    position: player_pos_in_main_city
-                        .position
-                        .clone()
-                        .unwrap_or_default()
-                        .into(),
-                    rotation: player_pos_in_main_city
-                        .rotation
-                        .clone()
-                        .unwrap_or_default()
-                        .into(),
+                    position: player_pos_in_main_city.position().clone().into(),
+                    rotation: player_pos_in_main_city.rotation().clone().into(),
                 }),
                 main_city_objects_state: player_info
-                    .main_city_objects_state
-                    .as_ref()
-                    .map(|map| map.iter().map(|(&k, &v)| (k, v)).collect())
-                    .unwrap_or_default(),
+                    .main_city_objects_state()
+                    .iter()
+                    .map(|(&k, &v)| (k, v))
+                    .collect(),
                 scene_unit_list: Vec::new(),
                 transform_id: initial_transform,
             }),
@@ -86,12 +64,7 @@ pub fn build_client_scene_info(
         SceneInfo::Fresh { .. } => crate::SceneInfo {
             scene_type: 4,
             fresh_scene_info: Some(crate::FreshSceneInfo {
-                beginner_procedure_id: player_info
-                    .beginner_procedure_info
-                    .as_ref()
-                    .unwrap()
-                    .procedure_id
-                    .unwrap_or_default() as u32,
+                beginner_procedure_id: *player_info.beginner_procedure_info().procedure_id() as u32,
             }),
             ..Default::default()
         },
@@ -123,8 +96,8 @@ pub fn build_client_dungeon_info(
     player_info: &PlayerInfo,
     scene_uid: u64,
 ) -> Option<crate::DungeonInfo> {
-    let dungeon_collection = player_info.dungeon_collection.as_ref().unwrap();
-    let Some(scene_info) = dungeon_collection.scenes.as_ref().unwrap().get(&scene_uid) else {
+    let dungeon_collection = player_info.dungeon_collection();
+    let Some(scene_info) = dungeon_collection.scenes().get(&scene_uid) else {
         return None;
     };
 
@@ -134,9 +107,7 @@ pub fn build_client_dungeon_info(
     }
 
     let dungeon_info = dungeon_collection
-        .dungeons
-        .as_ref()
-        .unwrap()
+        .dungeons()
         .get(scene_info.get_dungeon_uid())
         .unwrap();
 
@@ -147,7 +118,7 @@ pub fn build_client_dungeon_info(
             .avatars
             .iter()
             .map(|(_, unit)| {
-                let avatar_info = player_info.items.as_ref().unwrap().get(&unit.uid).unwrap();
+                let avatar_info = player_info.items().get(&unit.uid).unwrap();
                 AvatarUnitInfo {
                     avatar_id: *avatar_info.get_id() as u32,
                 }
@@ -162,13 +133,9 @@ pub fn build_hall_refresh_arg(
     hall_scene_uid: u64,
     refresh_immediately: bool,
 ) -> Option<PtcHallRefreshArg> {
-    let dungeon_collection = player_info.dungeon_collection.as_ref().unwrap();
-    let scene_info = dungeon_collection
-        .scenes
-        .as_ref()
-        .unwrap()
-        .get(&hall_scene_uid);
-    let player_pos_in_main_city = player_info.pos_in_main_city.as_ref().unwrap();
+    let dungeon_collection = player_info.dungeon_collection();
+    let scene_info = dungeon_collection.scenes().get(&hall_scene_uid);
+    let player_pos_in_main_city = player_info.pos_in_main_city();
 
     match scene_info {
         Some(SceneInfo::Hall {
@@ -180,39 +147,23 @@ pub fn build_hall_refresh_arg(
         }) => Some(PtcHallRefreshArg {
             refresh_immediately,
             section_id: *section_id as u32,
-            player_avatar_id: player_info.avatar_id.unwrap_or_default(),
-            main_city_avatar_id: player_info.main_city_avatar_id.unwrap_or_default(),
-            transform_id: player_pos_in_main_city
-                .initial_pos_id
-                .clone()
-                .unwrap_or_default(),
-            bgm_id: player_info
-                .bgm_info
-                .as_ref()
-                .map(|bgm| bgm.bgm_id.clone())
-                .flatten()
-                .unwrap_or_default(),
+            player_avatar_id: *player_info.avatar_id(),
+            main_city_avatar_id: *player_info.main_city_avatar_id(),
+            transform_id: player_pos_in_main_city.initial_pos_id().clone(),
+            bgm_id: *player_info.bgm_info().bgm_id(),
             day_of_week: main_city_time_info.day_of_week as u32,
             time_of_day: main_city_time_info.initial_time,
             camera_x: *camera_x,
             camera_y: *camera_y,
             position: crate::Transform {
-                position: player_pos_in_main_city
-                    .position
-                    .clone()
-                    .unwrap_or_default()
-                    .into(),
-                rotation: player_pos_in_main_city
-                    .rotation
-                    .clone()
-                    .unwrap_or_default()
-                    .into(),
+                position: player_pos_in_main_city.position().clone().into(),
+                rotation: player_pos_in_main_city.rotation().clone().into(),
             },
             main_city_objects_state: player_info
-                .main_city_objects_state
-                .as_ref()
-                .map(|map| map.iter().map(|(&k, &v)| (k, v)).collect())
-                .unwrap_or_default(),
+                .main_city_objects_state()
+                .iter()
+                .map(|(&k, &v)| (k, v))
+                .collect(),
             scene_unit_list: Vec::new(),
         }),
         _ => None,
@@ -221,9 +172,7 @@ pub fn build_hall_refresh_arg(
 
 pub fn build_sync_avatar_info_list(player_info: &PlayerInfo) -> Vec<AvatarInfo> {
     player_info
-        .items
-        .as_ref()
-        .unwrap()
+        .items()
         .iter()
         .map(|(uid, item)| {
             if let ItemInfo::AvatarInfo {
@@ -249,9 +198,7 @@ pub fn build_sync_avatar_info_list(player_info: &PlayerInfo) -> Vec<AvatarInfo> 
                     first_get_time: *first_get_time as i64,
                     talent_switch_list: talent_switch.clone(),
                     cur_weapon_uid: player_info
-                        .items
-                        .as_ref()
-                        .unwrap()
+                        .items()
                         .iter()
                         .find(|(_, item)| {
                             if let ItemInfo::Weapon { avatar_uid, .. } = item {
@@ -280,9 +227,7 @@ pub fn build_sync_avatar_info_list(player_info: &PlayerInfo) -> Vec<AvatarInfo> 
 
 pub fn build_sync_weapon_info_list(player_info: &PlayerInfo) -> Vec<WeaponInfo> {
     player_info
-        .items
-        .as_ref()
-        .unwrap()
+        .items()
         .iter()
         .map(|(_, item)| {
             if let ItemInfo::Weapon {
@@ -315,9 +260,7 @@ pub fn build_sync_weapon_info_list(player_info: &PlayerInfo) -> Vec<WeaponInfo> 
 
 pub fn build_sync_equip_info_list(player_info: &PlayerInfo) -> Vec<EquipInfo> {
     player_info
-        .items
-        .as_ref()
-        .unwrap()
+        .items()
         .iter()
         .map(|(_, item)| {
             if let ItemInfo::Equip {
@@ -348,9 +291,7 @@ pub fn build_sync_equip_info_list(player_info: &PlayerInfo) -> Vec<EquipInfo> {
 
 pub fn build_sync_resource_info_list(player_info: &PlayerInfo) -> Vec<ResourceInfo> {
     player_info
-        .items
-        .as_ref()
-        .unwrap()
+        .items()
         .iter()
         .map(|(_, item)| match item {
             ItemInfo::Currency { id, count, .. } => Some(ResourceInfo {
@@ -379,9 +320,7 @@ pub fn build_sync_auto_recovery_info(
     player_info: &PlayerInfo,
 ) -> HashMap<u32, crate::AutoRecoveryInfo> {
     player_info
-        .auto_recovery_info
-        .as_ref()
-        .unwrap()
+        .auto_recovery_info()
         .iter()
         .map(|(id, info)| (*id as u32, info.clone()))
         .collect()

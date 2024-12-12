@@ -323,7 +323,7 @@ pub fn create_starting_player_info(uid: u64, nick_name: &str) -> (UidCounter, Pl
         .filter(|tmpl| tmpl.camp() != 0)
         .for_each(|tmpl| {
             let uid = counter.next();
-            player_info.items.as_mut().unwrap().insert(
+            player_info.items_mut().insert(
                 uid,
                 ItemInfo::AvatarInfo {
                     uid,
@@ -354,7 +354,7 @@ pub fn create_starting_player_info(uid: u64, nick_name: &str) -> (UidCounter, Pl
         .iter()
         .for_each(|tmpl| {
             let uid = counter.next();
-            player_info.items.as_mut().unwrap().insert(
+            player_info.items_mut().insert(
                 uid,
                 ItemInfo::Weapon {
                     uid,

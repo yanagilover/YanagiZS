@@ -17,20 +17,18 @@ pub async fn on_rpc_get_archive_info_arg(
     session: &mut PlayerSession,
     _: RpcGetArchiveInfoArg,
 ) -> Result<RpcGetArchiveInfoRet, i32> {
-    let archive_info = session.player_info.archive_info.as_ref().unwrap();
+    let archive_info = session.player_info.archive_info();
 
     Ok(RpcGetArchiveInfoRet {
         retcode: 0,
         archive_info: ArchiveInfo {
             hollow_archive_id_list: archive_info
-                .hollow_archive_id
-                .as_ref()
-                .map(|set| set.iter().map(|id| *id as u32).collect())
-                .unwrap_or_default(),
+                .hollow_archive_id()
+                .iter()
+                .map(|id| *id as u32)
+                .collect(),
             videotaps_info: archive_info
-                .videotaps_info
-                .as_ref()
-                .unwrap()
+                .videotaps_info()
                 .iter()
                 .map(|(id, videotape)| VideotapeInfo {
                     archive_file_id: *id as u32,
@@ -52,10 +50,10 @@ pub async fn on_rpc_get_yorozuya_info_arg(
         retcode: 0,
         yorozuya_info: YorozuyaInfo {
             unlock_hollow_id_list: yorozuya_info
-                .unlock_hollow_id
-                .as_ref()
-                .map(|list| list.iter().map(|id| *id as u32).collect())
-                .unwrap_or_default(),
+                .unlock_hollow_id()
+                .iter()
+                .map(|id| *id as u32)
+                .collect(),
         },
     })
 }

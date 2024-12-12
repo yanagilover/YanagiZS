@@ -99,8 +99,8 @@ pub async fn on_rpc_player_transaction_arg(
     session: &mut PlayerSession,
     _: RpcPlayerTransactionArg,
 ) -> Result<RpcPlayerTransactionRet, i32> {
-    let player_uid = session.player_info.uid.unwrap_or_default();
-    let scene_uid = session.player_info.scene_uid.unwrap_or_default();
+    let player_uid = session.player_info.uid();
+    let scene_uid = session.player_info.scene_uid();
 
     Ok(RpcPlayerTransactionRet {
         retcode: 0,

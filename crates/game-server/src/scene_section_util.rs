@@ -10,18 +10,15 @@ use qwer::{phashmap, phashset, PropertyHashMap, PropertyHashSet};
 use crate::{level, PlayerSession};
 
 pub fn init_hall_scene_section(session: &mut PlayerSession, scene_uid: u64, section_id: i32) {
-    let single_dungeon_group = session.player_info.single_dungeon_group.as_mut().unwrap();
+    let single_dungeon_group = session.player_info.single_dungeon_group_mut();
     if single_dungeon_group
-        .section
-        .as_ref()
-        .unwrap()
+        .section()
         .contains(&scene_uid, &section_id)
     {
         return;
     }
 
-    let section_map = single_dungeon_group.section.as_mut().unwrap();
-    section_map.insert(
+    single_dungeon_group.section_mut().insert(
         scene_uid,
         section_id,
         SectionInfo {
@@ -67,10 +64,8 @@ fn build_scene_unit_protocol_info(
     scene_uid: u64,
     section_id: u32,
 ) -> Vec<SceneUnitProtocolInfo> {
-    let sdg = session.player_info.single_dungeon_group.as_ref().unwrap();
-    sdg.npcs
-        .as_ref()
-        .unwrap()
+    let sdg = session.player_info.single_dungeon_group();
+    sdg.npcs()
         .iter()
         .filter(|(s_uid, _, npc)| {
             **s_uid == scene_uid && npc.scene_data.section_id == section_id as i32

@@ -15,14 +15,7 @@ pub async fn on_rpc_enter_world_arg(
 ) -> Result<RpcEnterWorldRet, i32> {
     let player_info = &mut session.player_info;
 
-    if player_info
-        .dungeon_collection
-        .as_ref()
-        .unwrap()
-        .default_scene_uid
-        .unwrap()
-        == 0
-    {
+    if *player_info.dungeon_collection().default_scene_uid() == 0 {
         let dungeon_uid = session.uid_counter.next();
         let scene_uid = session.uid_counter.next();
 
@@ -79,38 +72,25 @@ pub async fn on_rpc_enter_world_arg(
             },
         };
 
-        let dungeon_collection = player_info.dungeon_collection.as_mut().unwrap();
+        let dungeon_collection = player_info.dungeon_collection_mut();
         dungeon_collection
-            .dungeons
-            .as_mut()
-            .unwrap()
+            .dungeons_mut()
             .insert(dungeon_uid, dungeon_info);
         dungeon_collection
-            .scenes
-            .as_mut()
-            .unwrap()
+            .scenes_mut()
             .insert(scene_uid, scene_info);
 
-        dungeon_collection.default_scene_uid = Some(scene_uid);
+        *dungeon_collection.default_scene_uid_mut() = scene_uid;
     }
 
-    let scene_uid = session
-        .player_info
-        .dungeon_collection
-        .as_ref()
-        .unwrap()
-        .default_scene_uid
-        .unwrap();
+    let scene_uid = *session.player_info.dungeon_collection().default_scene_uid();
+
     session.player_info.scene_uid = Some(scene_uid);
 
     if let Some(section_id) = session
         .player_info
-        .dungeon_collection
-        .as_ref()
-        .unwrap()
-        .scenes
-        .as_ref()
-        .unwrap()
+        .dungeon_collection()
+        .scenes()
         .get(&scene_uid)
         .map(|sc| *sc.get_section_id())
     {
@@ -154,13 +134,11 @@ pub async fn on_rpc_save_pos_in_main_city_arg(
     session: &mut PlayerSession,
     arg: RpcSavePosInMainCityArg,
 ) -> Result<RpcSavePosInMainCityRet, i32> {
-    let pos_in_main_city = session.player_info.pos_in_main_city.as_mut().unwrap();
-
-    let scene_uid = session.player_info.scene_uid.unwrap();
-    let dungeon_collection = session.player_info.dungeon_collection.as_ref().unwrap();
+    let scene_uid = *session.player_info.scene_uid();
+    let dungeon_collection = session.player_info.dungeon_collection();
 
     let Some(protocol::scene_info::SceneInfo::Hall { section_id, .. }) =
-        dungeon_collection.scenes.as_ref().unwrap().get(&scene_uid)
+        dungeon_collection.scenes().get(&scene_uid)
     else {
         return Err(-1);
     };
@@ -170,9 +148,10 @@ pub async fn on_rpc_save_pos_in_main_city_arg(
             arg.position.position.clone().try_into(),
             arg.position.rotation.clone().try_into(),
         ) {
-            pos_in_main_city.position = Some(position);
-            pos_in_main_city.rotation = Some(rotation);
-            pos_in_main_city.initial_pos_id = Some(String::with_capacity(0));
+            session.player_info.pos_in_main_city_mut().position = Some(position);
+            session.player_info.pos_in_main_city_mut().rotation = Some(rotation);
+            session.player_info.pos_in_main_city_mut().initial_pos_id =
+                Some(String::with_capacity(0));
 
             debug!(
                 "player_uid: {}, pos in main city updated: {arg:?}",
@@ -195,24 +174,19 @@ pub async fn on_rpc_enter_section_arg(
     arg: RpcEnterSectionArg,
 ) -> Result<RpcEnterSectionRet, i32> {
     let player_info = &mut session.player_info;
-    let cur_scene_uid = player_info.scene_uid.unwrap();
+    let cur_scene_uid = *player_info.scene_uid();
 
-    let dungeon_collection = player_info.dungeon_collection.as_mut().unwrap();
+    let dungeon_collection = player_info.dungeon_collection_mut();
 
-    let Some(scene_info::SceneInfo::Hall { section_id, .. }) = dungeon_collection
-        .scenes
-        .as_mut()
-        .unwrap()
-        .get_mut(&cur_scene_uid)
+    let Some(scene_info::SceneInfo::Hall { section_id, .. }) =
+        dungeon_collection.scenes_mut().get_mut(&cur_scene_uid)
     else {
         error!("RpcEnterSection: current scene is not Hall!");
         return Err(-1);
     };
 
     *section_id = arg.section_id as i32;
-
-    let player_pos_in_main_city = player_info.pos_in_main_city.as_mut().unwrap();
-    player_pos_in_main_city.initial_pos_id = Some(arg.transform_id);
+    player_info.pos_in_main_city_mut().initial_pos_id = Some(arg.transform_id);
 
     scene_section_util::init_hall_scene_section(session, cur_scene_uid, arg.section_id as i32);
     level::on_section_enter(session, cur_scene_uid, arg.section_id as i32);
@@ -249,7 +223,7 @@ pub async fn on_rpc_begin_training_course_battle_arg(
     let dungeon_uid = session.uid_counter.next();
     let scene_uid = session.uid_counter.next();
 
-    let cur_scene_uid = player_info.scene_uid.unwrap();
+    let cur_scene_uid = *player_info.scene_uid();
     let dungeon_info = protocol::dungeon_info::DungeonInfo {
         uid: dungeon_uid,
         id: 12254000,
@@ -327,16 +301,12 @@ pub async fn on_rpc_begin_training_course_battle_arg(
         weather: WeatherType::Rain,
     };
 
-    let dungeon_collection = player_info.dungeon_collection.as_mut().unwrap();
+    let dungeon_collection = player_info.dungeon_collection_mut();
     dungeon_collection
-        .dungeons
-        .as_mut()
-        .unwrap()
+        .dungeons_mut()
         .insert(dungeon_uid, dungeon_info);
     dungeon_collection
-        .scenes
-        .as_mut()
-        .unwrap()
+        .scenes_mut()
         .insert(scene_uid, scene_info);
 
     let mut scene_info = build_client_scene_info(&session.player_info, scene_uid).unwrap();
@@ -371,23 +341,13 @@ pub async fn on_rpc_leave_cur_dungeon_arg(
     session: &mut PlayerSession,
     _: RpcLeaveCurDungeonArg,
 ) -> Result<RpcLeaveCurDungeonRet, i32> {
-    let scene_uid = session
-        .player_info
-        .dungeon_collection
-        .as_ref()
-        .unwrap()
-        .default_scene_uid
-        .unwrap();
+    let scene_uid = *session.player_info.dungeon_collection().default_scene_uid();
     session.player_info.scene_uid = Some(scene_uid);
 
     if let Some(section_id) = session
         .player_info
-        .dungeon_collection
-        .as_ref()
-        .unwrap()
-        .scenes
-        .as_ref()
-        .unwrap()
+        .dungeon_collection()
+        .scenes()
         .get(&scene_uid)
         .map(|sc| *sc.get_section_id())
     {

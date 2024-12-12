@@ -75,9 +75,7 @@ pub async fn on_rpc_weapon_dress_arg(
 ) -> Result<RpcWeaponDressRet, i32> {
     let Some(target_avatar_uid) = session
         .player_info
-        .items
-        .as_ref()
-        .unwrap()
+        .items()
         .iter()
         .find(|(_, item)| {
             if let ItemInfo::AvatarInfo { id, .. } = item {
@@ -94,9 +92,7 @@ pub async fn on_rpc_weapon_dress_arg(
 
     let Some((_, ItemInfo::Weapon { avatar_uid, .. })) = session
         .player_info
-        .items
-        .as_mut()
-        .unwrap()
+        .items_mut()
         .iter_mut()
         .find(|(uid, _)| (*uid & 0xFFFFFFFF) as u32 == arg.weapon_uid)
     else {
@@ -124,9 +120,7 @@ pub async fn on_rpc_weapon_un_dress_arg(
 ) -> Result<RpcWeaponUnDressRet, i32> {
     let Some(target_avatar_uid) = session
         .player_info
-        .items
-        .as_ref()
-        .unwrap()
+        .items()
         .iter()
         .find(|(_, item)| {
             if let ItemInfo::AvatarInfo { id, .. } = item {
@@ -143,9 +137,7 @@ pub async fn on_rpc_weapon_un_dress_arg(
 
     session
         .player_info
-        .items
-        .as_mut()
-        .unwrap()
+        .items_mut()
         .iter_mut()
         .for_each(|(_, item)| {
             if let ItemInfo::Weapon { avatar_uid, .. } = item {

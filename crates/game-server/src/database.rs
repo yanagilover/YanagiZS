@@ -75,7 +75,7 @@ impl DbContext {
     }
 
     pub async fn save_player_data(&self, last_uid: u32, player_info: &PlayerInfo) -> Result<()> {
-        let player_uid = player_info.uid.unwrap();
+        let player_uid = *player_info.uid();
 
         let _: PlayerData = self
             .0

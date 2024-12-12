@@ -118,17 +118,13 @@ pub async fn on_rpc_mod_time_arg(
     debug!("{arg:?}");
 
     let player_info = &mut session.player_info;
-    let scene_uid = player_info.scene_uid.unwrap();
-    let dungeon_collection = player_info.dungeon_collection.as_mut().unwrap();
+    let scene_uid = *player_info.scene_uid();
+    let dungeon_collection = player_info.dungeon_collection_mut();
 
     if let Some(protocol::scene_info::SceneInfo::Hall {
         main_city_time_info,
         ..
-    }) = dungeon_collection
-        .scenes
-        .as_mut()
-        .unwrap()
-        .get_mut(&scene_uid)
+    }) = dungeon_collection.scenes_mut().get_mut(&scene_uid)
     {
         let prev_time = main_city_time_info.initial_time;
         main_city_time_info.initial_time = match arg.time_period {
